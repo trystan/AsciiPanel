@@ -158,6 +158,9 @@ public class AsciiPanel extends JPanel {
      * @param cursorX the distance from the left new text should be written to
      */
     public void setCursorX(int cursorX) {
+        if (cursorX < 0 || cursorX >= widthInCharacters)
+            throw new IllegalArgumentException("cursorX " + cursorX + " must be within range [0," + widthInCharacters + ")." );
+
         this.cursorX = cursorX;
     }
 
@@ -175,6 +178,9 @@ public class AsciiPanel extends JPanel {
      * @param cursorY the distance from the top new text should be written to
      */
     public void setCursorY(int cursorY) {
+        if (cursorY < 0 || cursorY >= heightInCharacters)
+            throw new IllegalArgumentException("cursorY " + cursorY + " must be within range [0," + heightInCharacters + ")." );
+
         this.cursorY = cursorY;
     }
 
@@ -203,6 +209,9 @@ public class AsciiPanel extends JPanel {
      * @param defaultBackgroundColor
      */
     public void setDefaultBackgroundColor(Color defaultBackgroundColor) {
+        if (defaultBackgroundColor == null)
+            throw new NullPointerException("defaultBackgroundColor must not be null.");
+
         this.defaultBackgroundColor = defaultBackgroundColor;
     }
 
@@ -219,11 +228,15 @@ public class AsciiPanel extends JPanel {
      * @param defaultForegroundColor
      */
     public void setDefaultForegroundColor(Color defaultForegroundColor) {
+        if (defaultForegroundColor == null)
+            throw new NullPointerException("defaultForegroundColor must not be null.");
+
         this.defaultForegroundColor = defaultForegroundColor;
     }
 
     /**
      * Class constructor.
+     * Default size is 80x24.
      */
     public AsciiPanel() {
         this(80, 24);
@@ -237,6 +250,12 @@ public class AsciiPanel extends JPanel {
     public AsciiPanel(int width, int height) {
         super();
 
+        if (width < 1)
+            throw new IllegalArgumentException("width " + width + " must be greater than 0." );
+
+        if (height < 1)
+            throw new IllegalArgumentException("height " + height + " must be greater than 0." );
+
         widthInCharacters = width;
         heightInCharacters = height;
         setPreferredSize(new Dimension(charWidth * widthInCharacters, charHeight * heightInCharacters));
@@ -248,9 +267,11 @@ public class AsciiPanel extends JPanel {
         backgroundColors = new Color[widthInCharacters][heightInCharacters];
         foregroundColors = new Color[widthInCharacters][heightInCharacters];
 
-        AsciiPanel.this.clear();
-
+        glyphs = new BufferedImage[256];
+        
         loadGlyphs();
+        
+        AsciiPanel.this.clear();
     }
 
     /**
@@ -259,6 +280,9 @@ public class AsciiPanel extends JPanel {
      */
     @Override
     public void paintComponent(Graphics g) {
+        if (g == null)
+            throw new NullPointerException();
+        
         for (int x = 0; x < widthInCharacters; x++) {
             for (int y = 0; y < heightInCharacters; y++) {
                 Color bg = backgroundColors[x][y];
@@ -272,15 +296,13 @@ public class AsciiPanel extends JPanel {
     }
 
     private void loadGlyphs() {
-        glyphs = new BufferedImage[255];
-
         try {
             glyphSprite = ImageIO.read(AsciiPanel.class.getResource("cp437.png"));
         } catch (IOException e) {
             System.err.println("loadGlyphs(): " + e.getMessage());
         }
 
-        for (int i = 0; i < 255; i++) {
+        for (int i = 0; i < 256; i++) {
             int sx = (i % 32) * charWidth + 8;
             int sy = (i / 32) * charHeight + 8;
 
@@ -335,6 +357,9 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear(char character) {
+        if (character < 0 || character >= glyphs.length)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+
         return clear(character, 0, 0, widthInCharacters, heightInCharacters, defaultForegroundColor, defaultBackgroundColor);
     }
 
@@ -346,6 +371,9 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear(char character, Color foreground, Color background) {
+        if (character < 0 || character >= glyphs.length)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+
         return clear(character, 0, 0, widthInCharacters, heightInCharacters, foreground, background);
     }
 
@@ -359,6 +387,28 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear(char character, int x, int y, int width, int height) {
+        if (character < 0 || character >= glyphs.length)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+
+        if (x < 0 || x >= widthInCharacters)
+            throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")." );
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")." );
+
+        if (width < 1)
+            throw new IllegalArgumentException("width " + width + " must be greater than 0." );
+
+        if (height < 1)
+            throw new IllegalArgumentException("height " + height + " must be greater than 0." );
+
+        if (x + width > widthInCharacters)
+            throw new IllegalArgumentException("x + width " + (x + width) + " must be less than " + (widthInCharacters + 1) + "." );
+
+        if (y + height > heightInCharacters)
+            throw new IllegalArgumentException("y + height " + (y + height) + " must be less than " + (heightInCharacters + 1) + "." );
+
+
         return clear(character, x, y, width, height, defaultForegroundColor, defaultBackgroundColor);
     }
 
@@ -374,6 +424,27 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear(char character, int x, int y, int width, int height, Color foreground, Color background) {
+        if (character < 0 || character >= glyphs.length)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+
+        if (x < 0 || x >= widthInCharacters)
+            throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")" );
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")" );
+
+        if (width < 1)
+            throw new IllegalArgumentException("width " + width + " must be greater than 0." );
+
+        if (height < 1)
+            throw new IllegalArgumentException("height " + height + " must be greater than 0." );
+
+        if (x + width > widthInCharacters)
+            throw new IllegalArgumentException("x + width " + (x + width) + " must be less than " + (widthInCharacters + 1) + "." );
+
+        if (y + height > heightInCharacters)
+            throw new IllegalArgumentException("y + height " + (y + height) + " must be less than " + (heightInCharacters + 1) + "." );
+
         for (int xo = x; xo < x + width; xo++) {
             for (int yo = y; yo < y + height; yo++) {
                 write(character, xo, yo, foreground, background);
@@ -389,6 +460,9 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character) {
+        if (character < 0 || character >= glyphs.length)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+
         return write(character, cursorX, cursorY, defaultForegroundColor, defaultBackgroundColor);
     }
 
@@ -400,6 +474,9 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character, Color foreground) {
+        if (character < 0 || character >= glyphs.length)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+
         return write(character, cursorX, cursorY, foreground, defaultBackgroundColor);
     }
 
@@ -412,6 +489,9 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character, Color foreground, Color background) {
+        if (character < 0 || character >= glyphs.length)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+
         return write(character, cursorX, cursorY, foreground, background);
     }
 
@@ -424,6 +504,15 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character, int x, int y) {
+        if (character < 0 || character >= glyphs.length)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+
+        if (x < 0 || x >= widthInCharacters)
+            throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")" );
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")" );
+
         return write(character, x, y, defaultForegroundColor, defaultBackgroundColor);
     }
 
@@ -437,6 +526,15 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character, int x, int y, Color foreground) {
+        if (character < 0 || character >= glyphs.length)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+
+        if (x < 0 || x >= widthInCharacters)
+            throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")" );
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")" );
+
         return write(character, x, y, foreground, defaultBackgroundColor);
     }
 
@@ -451,6 +549,18 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character, int x, int y, Color foreground, Color background) {
+        if (character < 0 || character >= glyphs.length)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+
+        if (x < 0 || x >= widthInCharacters)
+            throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")" );
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")" );
+
+        if (foreground == null) foreground = defaultForegroundColor;
+        if (background == null) background = defaultBackgroundColor;
+
         chars[x][y] = character;
         foregroundColors[x][y] = foreground;
         backgroundColors[x][y] = background;
@@ -466,6 +576,12 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(String string) {
+        if (string == null)
+            throw new NullPointerException("string must not be null" );
+
+        if (cursorX + string.length() >= widthInCharacters)
+            throw new IllegalArgumentException("cursorX + string.length() " + (cursorX + string.length()) + " must be less than " + widthInCharacters + "." );
+
         return write(string, cursorX, cursorY, defaultForegroundColor, defaultBackgroundColor);
     }
 
@@ -477,6 +593,12 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(String string, Color foreground) {
+        if (string == null)
+            throw new NullPointerException("string must not be null" );
+
+        if (cursorX + string.length() >= widthInCharacters)
+            throw new IllegalArgumentException("cursorX + string.length() " + (cursorX + string.length()) + " must be less than " + widthInCharacters + "." );
+
         return write(string, cursorX, cursorY, foreground, defaultBackgroundColor);
     }
 
@@ -489,6 +611,12 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(String string, Color foreground, Color background) {
+        if (string == null)
+            throw new NullPointerException("string must not be null" );
+
+        if (cursorX + string.length() >= widthInCharacters)
+            throw new IllegalArgumentException("cursorX + string.length() " + (cursorX + string.length()) + " must be less than " + widthInCharacters + "." );
+
         return write(string, cursorX, cursorY, foreground, background);
     }
 
@@ -501,6 +629,18 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(String string, int x, int y) {
+        if (string == null)
+            throw new NullPointerException("string must not be null" );
+
+        if (x + string.length() >= widthInCharacters)
+            throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than " + widthInCharacters + "." );
+
+        if (x < 0 || x >= widthInCharacters)
+            throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")" );
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")" );
+
         return write(string, x, y, defaultForegroundColor, defaultBackgroundColor);
     }
 
@@ -514,6 +654,18 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(String string, int x, int y, Color foreground) {
+        if (string == null)
+            throw new NullPointerException("string must not be null" );
+
+        if (x + string.length() >= widthInCharacters)
+            throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than " + widthInCharacters + "." );
+
+        if (x < 0 || x >= widthInCharacters)
+            throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")" );
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")" );
+
         return write(string, x, y, foreground, defaultBackgroundColor);
     }
 
@@ -528,6 +680,96 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(String string, int x, int y, Color foreground, Color background) {
+        if (string == null)
+            throw new NullPointerException("string must not be null." );
+        
+        if (x + string.length() >= widthInCharacters)
+            throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than " + widthInCharacters + "." );
+
+        if (x < 0 || x >= widthInCharacters)
+            throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")." );
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")." );
+
+        if (foreground == null)
+            foreground = defaultForegroundColor;
+
+        if (background == null)
+            background = defaultBackgroundColor;
+
+        for (int i = 0; i < string.length(); i++) {
+            write(string.charAt(i), x + i, y, foreground, background);
+        }
+        return this;
+    }
+
+    /**
+     * Write a string to the center of the panel at the specified y position.
+     * This updates the cursor's position.
+     * @param string     the string to write
+     * @param y          the distance from the top to begin writing from
+     * @return this for convenient chaining of method calls
+     */
+    public AsciiPanel writeCenter(String string, int y) {
+        if (string == null)
+            throw new NullPointerException("string must not be null" );
+
+        if (string.length() >= widthInCharacters)
+            throw new IllegalArgumentException("string.length() " + string.length() + " must be less than " + widthInCharacters + "." );
+
+        int x = (widthInCharacters - string.length()) / 2;
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")" );
+
+        return write(string, x, y, defaultForegroundColor, defaultBackgroundColor);
+    }
+
+    /**
+     * Write a string to the center of the panel at the specified y position with the specified foreground color.
+     * This updates the cursor's position but not the default foreground color.
+     * @param string     the string to write
+     * @param y          the distance from the top to begin writing from
+     * @param foreground the foreground color or null to use the default
+     * @return this for convenient chaining of method calls
+     */
+    public AsciiPanel writeCenter(String string, int y, Color foreground) {
+        if (string == null)
+            throw new NullPointerException("string must not be null" );
+
+        if (string.length() >= widthInCharacters)
+            throw new IllegalArgumentException("string.length() " + string.length() + " must be less than " + widthInCharacters + "." );
+
+        int x = (widthInCharacters - string.length()) / 2;
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")" );
+
+        return write(string, x, y, foreground, defaultBackgroundColor);
+    }
+
+    /**
+     * Write a string to the center of the panel at the specified y position with the specified foreground and background colors.
+     * This updates the cursor's position but not the default foreground or background colors.
+     * @param string     the string to write
+     * @param y          the distance from the top to begin writing from
+     * @param foreground the foreground color or null to use the default
+     * @param background the background color or null to use the default
+     * @return this for convenient chaining of method calls
+     */
+    public AsciiPanel writeCenter(String string, int y, Color foreground, Color background) {
+        if (string == null)
+            throw new NullPointerException("string must not be null." );
+
+        if (string.length() >= widthInCharacters)
+            throw new IllegalArgumentException("string.length() " + string.length() + " must be less than " + widthInCharacters + "." );
+
+        int x = (widthInCharacters - string.length()) / 2;
+        
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")." );
+
         if (foreground == null)
             foreground = defaultForegroundColor;
 
