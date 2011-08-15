@@ -114,6 +114,10 @@ public class AsciiPanel extends JPanel {
     private Color[][] backgroundColors;
     private Color[][] foregroundColors;
 
+    private char[][] oldChars;
+    private Color[][] oldBackgroundColors;
+    private Color[][] oldForegroundColors;
+
     /**
      * Gets the height, in pixels, of a character.
      * @return
@@ -271,6 +275,10 @@ public class AsciiPanel extends JPanel {
         backgroundColors = new Color[widthInCharacters][heightInCharacters];
         foregroundColors = new Color[widthInCharacters][heightInCharacters];
 
+        oldChars = new char[widthInCharacters][heightInCharacters];
+        oldBackgroundColors = new Color[widthInCharacters][heightInCharacters];
+        oldForegroundColors = new Color[widthInCharacters][heightInCharacters];
+
         glyphs = new BufferedImage[256];
         
         loadGlyphs();
@@ -295,12 +303,21 @@ public class AsciiPanel extends JPanel {
         
         for (int x = 0; x < widthInCharacters; x++) {
             for (int y = 0; y < heightInCharacters; y++) {
+            	if (oldBackgroundColors[x][y] == backgroundColors[x][y]
+            	 && oldForegroundColors[x][y] == foregroundColors[x][y]
+            	 && oldChars[x][y] == chars[x][y])
+            		continue;
+            	
                 Color bg = backgroundColors[x][y];
                 Color fg = foregroundColors[x][y];
 
                 LookupOp op = setColors(bg, fg);
                 BufferedImage img = op.filter(glyphs[chars[x][y]], null);
                 offscreenGraphics.drawImage(img, x * charWidth, y * charHeight, null);
+                
+                oldBackgroundColors[x][y] = backgroundColors[x][y];
+        	    oldForegroundColors[x][y] = foregroundColors[x][y];
+        	    oldChars[x][y] = chars[x][y];
             }
         }
         
