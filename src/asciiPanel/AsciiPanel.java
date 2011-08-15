@@ -3,6 +3,7 @@ package asciiPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ByteLookupTable;
 import java.awt.image.LookupOp;
@@ -15,8 +16,9 @@ import javax.swing.JPanel;
  * @author Trystan Spangler
  */
 public class AsciiPanel extends JPanel {
+	private static final long serialVersionUID = -4167851861147593092L;
 
-    /**
+	/**
      * The color black (pure black).
      */
     public static Color black = new Color(0, 0, 0);
@@ -95,7 +97,9 @@ public class AsciiPanel extends JPanel {
      * A brighter white (pure white).
      */
     public static Color brightWhite = new Color(255, 255, 255);
-    
+
+	private Image offscreenBuffer;
+	private Graphics offscreenGraphics;
     private int widthInCharacters;
     private int heightInCharacters;
     private int charWidth = 9;
@@ -273,15 +277,21 @@ public class AsciiPanel extends JPanel {
         
         AsciiPanel.this.clear();
     }
-
-    /**
-     *
-     * @param g
-     */
+    
     @Override
-    public void paintComponent(Graphics g) {
+    public void update(Graphics g) {
+         paint(g); 
+    } 
+
+    @Override
+    public void paint(Graphics g) {
         if (g == null)
             throw new NullPointerException();
+        
+        if (offscreenBuffer == null){
+            offscreenBuffer = createImage(this.getWidth(), this.getHeight()); 
+            offscreenGraphics = offscreenBuffer.getGraphics();
+        }
         
         for (int x = 0; x < widthInCharacters; x++) {
             for (int y = 0; y < heightInCharacters; y++) {
@@ -290,9 +300,11 @@ public class AsciiPanel extends JPanel {
 
                 LookupOp op = setColors(bg, fg);
                 BufferedImage img = op.filter(glyphs[chars[x][y]], null);
-                g.drawImage(img, x * charWidth, y * charHeight, null);
+                offscreenGraphics.drawImage(img, x * charWidth, y * charHeight, null);
             }
         }
+        
+        g.drawImage(offscreenBuffer,0,0,this); 
     }
 
     private void loadGlyphs() {
