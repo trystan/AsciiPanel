@@ -116,7 +116,6 @@ public class AsciiPanel extends JPanel {
     private char[][] oldChars;
     private Color[][] oldBackgroundColors;
     private Color[][] oldForegroundColors;
-    private boolean dirty;
 
     /**
      * Gets the height, in pixels, of a character.
@@ -301,9 +300,6 @@ public class AsciiPanel extends JPanel {
             offscreenGraphics = offscreenBuffer.getGraphics();
         }
         
-        if (!dirty)
-        	return;
-        
         for (int x = 0; x < widthInCharacters; x++) {
             for (int y = 0; y < heightInCharacters; y++) {
             	if (oldBackgroundColors[x][y] == backgroundColors[x][y]
@@ -325,7 +321,6 @@ public class AsciiPanel extends JPanel {
         }
         
         g.drawImage(offscreenBuffer,0,0,this);
-        dirty = false;
     }
 
     private void loadGlyphs() {
@@ -599,7 +594,6 @@ public class AsciiPanel extends JPanel {
         backgroundColors[x][y] = background;
         cursorX = x + 1;
         cursorY = y;
-        dirty = true;
         return this;
     }
 
