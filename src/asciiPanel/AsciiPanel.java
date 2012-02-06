@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ByteLookupTable;
 import java.awt.image.LookupOp;
+import java.awt.image.ShortLookupTable;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
