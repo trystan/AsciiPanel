@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 public class AsciiPanel extends JPanel {
 	private static final long serialVersionUID = -4167851861147593092L;
 
-	/**
+    /**
      * The color black (pure black).
      */
     public static Color black = new Color(0, 0, 0);
@@ -98,8 +98,8 @@ public class AsciiPanel extends JPanel {
      */
     public static Color brightWhite = new Color(255, 255, 255);
 
-	private Image offscreenBuffer;
-	private Graphics offscreenGraphics;
+    private Image offscreenBuffer;
+    private Graphics offscreenGraphics;
     private int widthInCharacters;
     private int heightInCharacters;
     private int charWidth = 9;
@@ -338,12 +338,19 @@ public class AsciiPanel extends JPanel {
             glyphs[i].getGraphics().drawImage(glyphSprite, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
         }
     }
-
+    
+    /**
+     * Create a <code>LookupOp</code> object (lookup table) mapping the original 
+     * pixels to the background and foreground colors, respectively. 
+     * @param bgColor the background color
+     * @param fgColor the foreground color
+     * @return the <code>LookupOp</code> object (lookup table)
+     */
     private LookupOp setColors(Color bgColor, Color fgColor) {
-        byte[] a = new byte[256];
-        byte[] r = new byte[256];
-        byte[] g = new byte[256];
-        byte[] b = new byte[256];
+        short[] a = new short[256];
+        short[] r = new short[256];
+        short[] g = new short[256];
+        short[] b = new short[256];
 
         byte bgr = (byte) (bgColor.getRed());
         byte bgg = (byte) (bgColor.getGreen());
@@ -367,8 +374,8 @@ public class AsciiPanel extends JPanel {
             }
         }
 
-        byte[][] table = {r, g, b, a};
-        return new LookupOp(new ByteLookupTable(0, table), null);
+        short[][] table = {r, g, b, a};
+        return new LookupOp(new ShortLookupTable(0, table), null);
     }
 
     /**
