@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.LookupOp;
 import java.awt.image.ShortLookupTable;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -815,5 +816,32 @@ public class AsciiPanel extends JPanel {
             write(string.charAt(i), x + i, y, foreground, background);
         }
         return this;
+    }
+    
+    public void withEachTile(TileTransformer transformer){
+		withEachTile(0, 0, widthInCharacters, heightInCharacters, transformer);
+    }
+    
+    public void withEachTile(int left, int top, int width, int height, TileTransformer transformer){
+		AsciiCharacterData data = new AsciiCharacterData();
+		
+    	for (int x0 = 0; x0 < width; x0++)
+    	for (int y0 = 0; y0 < height; y0++){
+    		int x = left + x0;
+    		int y = top + y0;
+    		
+    		if (x < 0 || y < 0 || x >= widthInCharacters || y >= heightInCharacters)
+    			continue;
+    		
+    		data.character = chars[x][y];
+    		data.foregroundColor = foregroundColors[x][y];
+    		data.backgroundColor = backgroundColors[x][y];
+    		
+    		transformer.transformTile(x, y, data);
+    		
+    		chars[x][y] = data.character;
+    		foregroundColors[x][y] = data.foregroundColor;
+    		backgroundColors[x][y] = data.backgroundColor;
+    	}
     }
 }
