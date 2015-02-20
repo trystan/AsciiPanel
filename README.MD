@@ -1,7 +1,7 @@
 AsciiPanel 2.0
 ==============
 
-# Basic
+## Basic
 AsciiPanel simulates a code page 437 ASCII terminal display. It supports all
 256 characters of codepage 437, arbitrary foreground colors, arbitrary
 background colors, and arbitrary terminal sizes.
@@ -11,7 +11,7 @@ Windows Command Prompt are provided. The deafault font is the CP437_10x10.
 
 This should be useful to roguelike developers.
 
-# 2.0 Features
+## 2.0 Features
 
 My version includes a couple 'fonts' to choose from. 
 - CP437 => a 9x16 Font
