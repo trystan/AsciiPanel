@@ -17,7 +17,7 @@ My version includes a couple 'fonts' to choose from.
 - CP437_9x16 
 - CP437_8x8 
 - CP437_10x10 
-- CP437_12x12 
+- CP437_12x12
 - CP437_16x16
 
  Additional Fonts from the [Dwarf Fortress Tileset](http://dwarffortresswiki.org/Tileset_repository)
