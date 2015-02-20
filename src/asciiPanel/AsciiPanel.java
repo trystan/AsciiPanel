@@ -103,8 +103,9 @@ public class AsciiPanel extends JPanel {
     private Graphics offscreenGraphics;
     private int widthInCharacters;
     private int heightInCharacters;
-    private int charWidth = 9;
-    private int charHeight = 16;
+    private int charWidth = 12;
+    private int charHeight = 12;
+    private AsciiFont terminalFont = AsciiFont.CP437_12x12;
     private Color defaultBackgroundColor;
     private Color defaultForegroundColor;
     private int cursorX;
@@ -256,8 +257,23 @@ public class AsciiPanel extends JPanel {
      * @param height
      */
     public AsciiPanel(int width, int height) {
+    	this(width, height, AsciiFont.CP437_12x12);
+    }    
+    
+    /**
+     * Class constructor specifying the width and height in characters.
+     * @param width
+     * @param height
+     */
+    public AsciiPanel(int width, int height, AsciiFont font) {
         super();
 
+        if(font == null) {
+    		terminalFont = AsciiFont.CP437_12x12;
+    	}
+    	charHeight = font.getHeight();
+    	charWidth = font.getWidth();
+    	
         if (width < 1)
             throw new IllegalArgumentException("width " + width + " must be greater than 0." );
 
@@ -326,7 +342,7 @@ public class AsciiPanel extends JPanel {
 
     private void loadGlyphs() {
         try {
-            glyphSprite = ImageIO.read(AsciiPanel.class.getResource("cp437.png"));
+            glyphSprite = ImageIO.read(AsciiPanel.class.getResource(terminalFont.getFontFilename()));
         } catch (IOException e) {
             System.err.println("loadGlyphs(): " + e.getMessage());
         }
