@@ -14,15 +14,17 @@ This should be useful to roguelike developers.
 ## 2.0 Features
 
 My version includes a couple 'fonts' to choose from. 
-- CP437 => a 9x16 Font
-- CP437_8x8 => a 8x8 Font
-- CP437_10x10 => a 10x10 Font
-- CP437_16x16 => a 16x16 Font
+- CP437_9x16 
+- CP437_8x8 
+- CP437_10x10 
+- CP437_12x12 
+- CP437_16x16
 
-No confirmed yet
-- Talryth_10x10 => a 10x10 Font from [Dwarf Fortress Tileset](http://dwarffortresswiki.org/Tileset_repository)
-- qubicfoot_10x10 => a 10x10 Font from [Dwarf Fortress Tileset](http://dwarffortresswiki.org/Tileset_repository)
-- a 12x12 font
+ Additional Fonts from the [Dwarf Fortress Tileset](http://dwarffortresswiki.org/Tileset_repository)
+- DRAKE_10x10
+- QBICFEET_10x10 
+- TALRYTH_15x15 
+
 
 To choose a specific font, you have to call the AsciiPanel Constructor with 3 Parameters. 
 Pass the columns, rows and the AsciiFont you want.
