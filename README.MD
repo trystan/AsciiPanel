@@ -28,4 +28,4 @@ To choose a specific font, you have to call the AsciiPanel Constructor with 3 Pa
 Pass the columns, rows and the AsciiFont you want.
 
 
-THe API and code are strongly based on [Trystan's AsciiPanel for Java](https://github.com/trystan/AsciiPanel).
+The API and code are strongly based on [Trystan's AsciiPanel for Java](https://github.com/trystan/AsciiPanel).
