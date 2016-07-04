@@ -1,0 +1,7 @@
+# AsciiPanel
+
+AsciiPanel simulates a [code page 437](https://en.wikipedia.org/wiki/Code_page_437) ASCII terminal display. It supports all 256 characters of codepage 437, arbitrary foreground colors, arbitrary background colors, and arbitrary terminal sizes.
+
+The default terminal size is 80x24 characters and default colors matching the Windows Command Prompt are provided.
+
+This should be useful to roguelike developers.
