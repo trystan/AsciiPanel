@@ -43,7 +43,7 @@ This will build the project, run the unit tests, and copy the resulting jar into
 <dependency>
   <groupId>net.trystan</groupId>
   <artifactId>ascii-panel</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
 </dependency>
 ```
 

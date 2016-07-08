@@ -6,7 +6,7 @@
  
   <groupId>net.trystan</groupId>
   <artifactId>ascii-panel</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
