@@ -257,7 +257,7 @@ public class AsciiPanel extends JPanel {
      * @param height
      */
     public AsciiPanel(int width, int height) {
-    	this(80,24,AsciiFont.CP437_9x16);
+    	this(width, height, null);
     }
     
     /**
@@ -269,19 +269,20 @@ public class AsciiPanel extends JPanel {
     public AsciiPanel(int width, int height, AsciiFont font) {
         super();
 
+        if (width < 1) {
+            throw new IllegalArgumentException("width " + width + " must be greater than 0." );
+        }
+
+        if (height < 1) {
+            throw new IllegalArgumentException("height " + height + " must be greater than 0." );
+        }
+
         if(font == null) {
         	font = AsciiFont.CP437_9x16;
         }
         this.charHeight = font.getHeight();
         this.charWidth = font.getWidth();
         this.terminalFontFile = font.getFontFilename();
-        
-        
-        if (width < 1)
-            throw new IllegalArgumentException("width " + width + " must be greater than 0." );
-
-        if (height < 1)
-            throw new IllegalArgumentException("height " + height + " must be greater than 0." );
 
         widthInCharacters = width;
         heightInCharacters = height;
