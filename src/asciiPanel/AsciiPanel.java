@@ -105,6 +105,7 @@ public class AsciiPanel extends JPanel {
     private int heightInCharacters;
     private int charWidth = 9;
     private int charHeight = 16;
+    private String terminalFontFile = "cp437_9x16.png";
     private Color defaultBackgroundColor;
     private Color defaultForegroundColor;
     private int cursorX;
@@ -256,8 +257,26 @@ public class AsciiPanel extends JPanel {
      * @param height
      */
     public AsciiPanel(int width, int height) {
+    	this(80,24,AsciiFont.CP437_9x16);
+    }
+    
+    /**
+     * Class constructor specifying the width and height in characters and the AsciiFont
+     * @param width
+     * @param height
+     * @param font if passing null, standard font CP437_9x16 will be used
+     */
+    public AsciiPanel(int width, int height, AsciiFont font) {
         super();
 
+        if(font == null) {
+        	font = AsciiFont.CP437_9x16;
+        }
+        this.charHeight = font.getHeight();
+        this.charWidth = font.getWidth();
+        this.terminalFontFile = font.getFontFilename();
+        
+        
         if (width < 1)
             throw new IllegalArgumentException("width " + width + " must be greater than 0." );
 
@@ -326,14 +345,14 @@ public class AsciiPanel extends JPanel {
 
     private void loadGlyphs() {
         try {
-            glyphSprite = ImageIO.read(AsciiPanel.class.getResource("cp437.png"));
+			glyphSprite = ImageIO.read(AsciiPanel.class.getResource(terminalFontFile));
         } catch (IOException e) {
             System.err.println("loadGlyphs(): " + e.getMessage());
         }
 
         for (int i = 0; i < 256; i++) {
-            int sx = (i % 32) * charWidth + 8;
-            int sy = (i / 32) * charHeight + 8;
+            int sx = (i % 16) * charWidth;
+            int sy = (i / 16) * charHeight;
 
             glyphs[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
             glyphs[i].getGraphics().drawImage(glyphSprite, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
