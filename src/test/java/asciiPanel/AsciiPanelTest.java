@@ -100,4 +100,19 @@ public class AsciiPanelTest {
 
     fail("Should have thrown an IllegalArgumentException.");
   }
+  
+  @Test( expected = NullPointerException.class )
+  public void testWriteNullFail() {
+    AsciiPanel panel = new AsciiPanel(80, 1);
+    panel.write(null);
+    fail("Should have thrown a NullPointerException.");
+  }
+  
+  @Test( expected = IllegalArgumentException.class )
+  public void testWriteInvalidLengthFail() {
+    AsciiPanel panel = new AsciiPanel(80, 1);
+    String superLongString = " ";    
+    panel.write(superLongString);
+    fail("Should have thrown an IllegalArgumentException.");
+  }
 }
