@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.plaf.PanelUI;
 import org.junit.runner.RunWith;
@@ -71,6 +70,18 @@ public class AsciiPanelTest {
     fail("Should have thrown an IllegalArgumentException.");
   }
 
+  @Test
+  public void testSetCursorX() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.setCursorX(0);
+  }
+
+  @Test
+  public void testSetCursorY() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.setCursorY(0);
+  }
+
   @Test( expected = NullPointerException.class )
   public void testSetNullDefaultBackgroundColor() {
     AsciiPanel panel = new AsciiPanel();
@@ -111,8 +122,99 @@ public class AsciiPanelTest {
   @Test( expected = IllegalArgumentException.class )
   public void testWriteInvalidLengthFail() {
     AsciiPanel panel = new AsciiPanel(80, 1);
-    String superLongString = " ";    
+    String superLongString = " ";
     panel.write(superLongString);
     fail("Should have thrown an IllegalArgumentException.");
   }
+
+  @Test
+  public void testWriteChar() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(' ');
+  }
+
+  @Test
+  public void testWriteCharFG() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(' ', AsciiPanel.white);
+  }
+
+  @Test
+  public void testWriteCharFGBG() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(' ', AsciiPanel.white, AsciiPanel.black);
+  }
+
+  @Test
+  public void testWriteCharXY() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(' ', 0, 0);
+  }
+
+  @Test
+  public void testWriteCharXYFG() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(' ', 0, 0, AsciiPanel.white);
+  }
+
+  @Test
+  public void testWriteCharXYFGBG() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(' ', 0, 0, AsciiPanel.white, AsciiPanel.black);
+  }
+
+  @Test
+  public void testWriteString() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(" ");
+  }
+
+  @Test
+  public void testWriteStringFG() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(" ", AsciiPanel.white);
+  }
+
+  @Test
+  public void testWriteStringFGBG() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(" ", AsciiPanel.white, AsciiPanel.black);
+  }
+
+  @Test
+  public void testWriteStringXY() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(" ", 0, 0);
+  }
+
+  @Test
+  public void testWriteStringXYFG() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(" ", 0, 0, AsciiPanel.white);
+  }
+
+  @Test
+  public void testWriteStringXYFGBG() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.write(" ", 0, 0, AsciiPanel.white, AsciiPanel.black);
+  }
+
+  @Test
+  public void testWriteCenter() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.writeCenter(" ", 0);
+  }
+
+  @Test
+  public void testWriteCenterFG() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.writeCenter(" ", 0, AsciiPanel.white);
+  }
+
+  @Test
+  public void testWriteCenterFGBG() {
+    AsciiPanel panel = new AsciiPanel(1, 1);
+    panel.writeCenter(" ", 0, AsciiPanel.white, AsciiPanel.black);
+  }
+
 }

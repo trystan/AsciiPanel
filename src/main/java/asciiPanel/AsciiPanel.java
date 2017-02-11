@@ -300,9 +300,9 @@ public class AsciiPanel extends JPanel {
         oldForegroundColors = new Color[widthInCharacters][heightInCharacters];
 
         glyphs = new BufferedImage[256];
-        
+
         loadGlyphs();
-        
+
         AsciiPanel.this.clear();
     }
     
@@ -435,6 +435,7 @@ public class AsciiPanel extends JPanel {
 
     /**
      * Clear the section of the screen with the specified character and whatever the default foreground and background colors are.
+     * The cursor position will not be modified.
      * @param character  the character to write
      * @param x          the distance from the left to begin writing from
      * @param y          the distance from the top to begin writing from
@@ -501,11 +502,16 @@ public class AsciiPanel extends JPanel {
         if (y + height > heightInCharacters)
             throw new IllegalArgumentException("y + height " + (y + height) + " must be less than " + (heightInCharacters + 1) + "." );
 
+        int originalCursorX = cursorX;
+        int originalCursorY = cursorY;
         for (int xo = x; xo < x + width; xo++) {
             for (int yo = y; yo < y + height; yo++) {
                 write(character, xo, yo, foreground, background);
             }
         }
+        cursorX = originalCursorX;
+        cursorY = originalCursorY;
+
         return this;
     }
 
@@ -516,7 +522,7 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character) {
-        if (character < 0 || character >= glyphs.length)
+        if (character < 0 || character > glyphs.length)
             throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
 
         return write(character, cursorX, cursorY, defaultForegroundColor, defaultBackgroundColor);
@@ -635,8 +641,8 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null" );
 
-        if (cursorX + string.length() >= widthInCharacters)
-            throw new IllegalArgumentException("cursorX + string.length() " + (cursorX + string.length()) + " must be less than " + widthInCharacters + "." );
+        if (cursorX + string.length() > widthInCharacters)
+            throw new IllegalArgumentException("cursorX + string.length() " + (cursorX + string.length()) + " must be less than " + widthInCharacters + ".");
 
         return write(string, cursorX, cursorY, defaultForegroundColor, defaultBackgroundColor);
     }
@@ -652,7 +658,7 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null" );
 
-        if (cursorX + string.length() >= widthInCharacters)
+        if (cursorX + string.length() > widthInCharacters)
             throw new IllegalArgumentException("cursorX + string.length() " + (cursorX + string.length()) + " must be less than " + widthInCharacters + "." );
 
         return write(string, cursorX, cursorY, foreground, defaultBackgroundColor);
@@ -670,7 +676,7 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null" );
 
-        if (cursorX + string.length() >= widthInCharacters)
+        if (cursorX + string.length() > widthInCharacters)
             throw new IllegalArgumentException("cursorX + string.length() " + (cursorX + string.length()) + " must be less than " + widthInCharacters + "." );
 
         return write(string, cursorX, cursorY, foreground, background);
@@ -688,7 +694,7 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null" );
 
-        if (x + string.length() >= widthInCharacters)
+        if (x + string.length() > widthInCharacters)
             throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than " + widthInCharacters + "." );
 
         if (x < 0 || x >= widthInCharacters)
@@ -713,7 +719,7 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null" );
 
-        if (x + string.length() >= widthInCharacters)
+        if (x + string.length() > widthInCharacters)
             throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than " + widthInCharacters + "." );
 
         if (x < 0 || x >= widthInCharacters)
@@ -739,7 +745,7 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null." );
         
-        if (x + string.length() >= widthInCharacters)
+        if (x + string.length() > widthInCharacters)
             throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than " + widthInCharacters + "." );
 
         if (x < 0 || x >= widthInCharacters)
@@ -771,7 +777,7 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null" );
 
-        if (string.length() >= widthInCharacters)
+        if (string.length() > widthInCharacters)
             throw new IllegalArgumentException("string.length() " + string.length() + " must be less than " + widthInCharacters + "." );
 
         int x = (widthInCharacters - string.length()) / 2;
@@ -794,7 +800,7 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null" );
 
-        if (string.length() >= widthInCharacters)
+        if (string.length() > widthInCharacters)
             throw new IllegalArgumentException("string.length() " + string.length() + " must be less than " + widthInCharacters + "." );
 
         int x = (widthInCharacters - string.length()) / 2;
@@ -818,7 +824,7 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null." );
 
-        if (string.length() >= widthInCharacters)
+        if (string.length() > widthInCharacters)
             throw new IllegalArgumentException("string.length() " + string.length() + " must be less than " + widthInCharacters + "." );
 
         int x = (widthInCharacters - string.length()) / 2;
