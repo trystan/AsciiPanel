@@ -26,12 +26,36 @@ The AsciiPanel class provides a special three-parameter constructor to support f
 
 ```java
 AsciiPanel myPanel = new AsciiPanel(80, 24, AsciiFont.DRAKE_10x10);
-
 ```
 
-## Build instructions
+## Including in your project
 
-AsciiPanel is a [Maven](https://maven.apache.org/) project, compatible with Maven 2 and Maven 3. It can be built using the following command:
+AsciiPanel can be added as a dependency in a [Maven](https://maven.apache.org/) project by adding the following repository to your POM:
+
+```xml
+<repositories>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+```
+
+and then adding the following to your `<dependencies>` block:
+
+```xml
+<dependency>
+  <groupId>com.github.trystan</groupId>
+  <artifactId>AsciiPanel</artifactId>
+  <!-- Optional: <version>e156206</version> -->
+</dependency>
+```
+
+Note that if you don't specify a particular commit hash or version, the latest build on the master branch will be assumed.
+
+## Local build instructions
+
+AsciiPanel is a Maven project, compatible with Maven 2 and Maven 3. It can be built using the following command:
 
 ```
 mvn install
