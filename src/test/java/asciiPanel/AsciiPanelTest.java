@@ -122,7 +122,7 @@ public class AsciiPanelTest {
   @Test( expected = IllegalArgumentException.class )
   public void testWriteInvalidLengthFail() {
     AsciiPanel panel = new AsciiPanel(80, 1);
-    String superLongString = " ";
+    String superLongString = String.format("%0100d", 1);
     panel.write(superLongString);
     fail("Should have thrown an IllegalArgumentException.");
   }
