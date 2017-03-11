@@ -118,6 +118,7 @@ public class AsciiPanel extends JPanel {
     private char[][] oldChars;
     private Color[][] oldBackgroundColors;
     private Color[][] oldForegroundColors;
+    private AsciiFont asciiFont;
 
     /**
      * Gets the height, in pixels, of a character.
@@ -244,6 +245,44 @@ public class AsciiPanel extends JPanel {
     }
 
     /**
+     * Gets the currently selected font
+     * @return
+     */
+    public AsciiFont getAsciiFont() {
+        return asciiFont;
+    }
+
+    /**
+     * Sets the used font. It is advisable to make sure the parent component is properly sized after setting the font
+     * as the panel dimensions will most likely change
+     * @param font
+     */
+    public void setAsciiFont(AsciiFont font)
+    {
+        if(this.asciiFont == font)
+        {
+            return;
+        }
+        this.asciiFont = font;
+
+        this.charHeight = font.getHeight();
+        this.charWidth = font.getWidth();
+        this.terminalFontFile = font.getFontFilename();
+
+        Dimension panelSize = new Dimension(charWidth * widthInCharacters, charHeight * heightInCharacters);
+        setPreferredSize(panelSize);
+
+        glyphs = new BufferedImage[256];
+
+        offscreenBuffer = new BufferedImage(panelSize.width, panelSize.height, BufferedImage.TYPE_INT_RGB);
+        offscreenGraphics = offscreenBuffer.getGraphics();
+
+        loadGlyphs();
+
+        oldChars = new char[widthInCharacters][heightInCharacters];
+    }
+
+    /**
      * Class constructor.
      * Default size is 80x24.
      */
@@ -277,16 +316,8 @@ public class AsciiPanel extends JPanel {
             throw new IllegalArgumentException("height " + height + " must be greater than 0." );
         }
 
-        if(font == null) {
-        	font = AsciiFont.CP437_9x16;
-        }
-        this.charHeight = font.getHeight();
-        this.charWidth = font.getWidth();
-        this.terminalFontFile = font.getFontFilename();
-
         widthInCharacters = width;
         heightInCharacters = height;
-        setPreferredSize(new Dimension(charWidth * widthInCharacters, charHeight * heightInCharacters));
 
         defaultBackgroundColor = black;
         defaultForegroundColor = white;
@@ -295,15 +326,13 @@ public class AsciiPanel extends JPanel {
         backgroundColors = new Color[widthInCharacters][heightInCharacters];
         foregroundColors = new Color[widthInCharacters][heightInCharacters];
 
-        oldChars = new char[widthInCharacters][heightInCharacters];
         oldBackgroundColors = new Color[widthInCharacters][heightInCharacters];
         oldForegroundColors = new Color[widthInCharacters][heightInCharacters];
 
-        glyphs = new BufferedImage[256];
-
-        loadGlyphs();
-
-        AsciiPanel.this.clear();
+        if(font == null) {
+        	font = AsciiFont.CP437_9x16;
+        }
+        setAsciiFont(font);
     }
     
     @Override
@@ -315,12 +344,7 @@ public class AsciiPanel extends JPanel {
     public void paint(Graphics g) {
         if (g == null)
             throw new NullPointerException();
-        
-        if (offscreenBuffer == null){
-            offscreenBuffer = createImage(this.getWidth(), this.getHeight()); 
-            offscreenGraphics = offscreenBuffer.getGraphics();
-        }
-        
+
         for (int x = 0; x < widthInCharacters; x++) {
             for (int y = 0; y < heightInCharacters; y++) {
             	if (oldBackgroundColors[x][y] == backgroundColors[x][y]
