@@ -1,5 +1,6 @@
 package asciiPanel;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -122,7 +123,7 @@ public class AsciiPanelTest {
   @Test( expected = IllegalArgumentException.class )
   public void testWriteInvalidLengthFail() {
     AsciiPanel panel = new AsciiPanel(80, 1);
-    String superLongString = " ";
+    String superLongString = String.format("%0100d", 1);
     panel.write(superLongString);
     fail("Should have thrown an IllegalArgumentException.");
   }
@@ -217,4 +218,15 @@ public class AsciiPanelTest {
     panel.writeCenter(" ", 0, AsciiPanel.white, AsciiPanel.black);
   }
 
+  @Test
+  public void testSetAsciiFont()
+  {
+    AsciiPanel panel = new AsciiPanel(1, 1, AsciiFont.CP437_9x16);
+    Dimension oldDimensions = panel.getPreferredSize();
+
+    panel.setAsciiFont(AsciiFont.TALRYTH_15_15);
+    Dimension newDimensions = panel.getPreferredSize();
+
+    assertNotEquals(oldDimensions, newDimensions);
+  }
 }
