@@ -47,6 +47,27 @@ This will build the project, run the unit tests, and copy the resulting jar into
 </dependency>
 ```
 
+Or you can add the jitpack repository to your pom:
+
+```xml
+<repository>
+  <id>jitpack.io</id>
+  <url>https://jitpack.io</url>
+</repository>
+```
+
+which provides AsciiPanel as dependency at:
+
+```xml
+<dependency>
+  <groupId>com.github.trystan</groupId>
+  <artifactId>AsciiPanel</artifactId>
+  <version>31bc98d</version>
+</dependency>
+```
+
+where `<version/>` describes the git commit you want to use.
+
 ## Notes
 
 This project is built with Java 8. However the code itself does not *require* Java 8. If you are supporting a project running an earlier version of Java, you can change the pom file and rebuild the jar using your chosen version of Java without having to modify the code.
