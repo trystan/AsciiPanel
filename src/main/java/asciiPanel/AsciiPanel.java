@@ -397,22 +397,24 @@ public class AsciiPanel extends JPanel {
         short[] g = new short[256];
         short[] b = new short[256];
 
+        byte bga = (byte) (bgColor.getAlpha());
         byte bgr = (byte) (bgColor.getRed());
         byte bgg = (byte) (bgColor.getGreen());
         byte bgb = (byte) (bgColor.getBlue());
 
+        byte fga = (byte) (fgColor.getAlpha());
         byte fgr = (byte) (fgColor.getRed());
         byte fgg = (byte) (fgColor.getGreen());
         byte fgb = (byte) (fgColor.getBlue());
 
         for (int i = 0; i < 256; i++) {
             if (i == 0) {
-                a[i] = (byte) 255;
+                a[i] = bga;
                 r[i] = bgr;
                 g[i] = bgg;
                 b[i] = bgb;
             } else {
-                a[i] = (byte) 255;
+                a[i] = fga;
                 r[i] = fgr;
                 g[i] = fgg;
                 b[i] = fgb;
