@@ -37,7 +37,7 @@ public class AsciiFont {
 		return height;
 	}
 
-	AsciiFont(String filename, int width, int height) {
+	public AsciiFont(String filename, int width, int height) {
 		this.fontFilename = filename;
 		this.width = width;
 		this.height = height;
