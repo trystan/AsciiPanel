@@ -72,7 +72,7 @@ For Gradle users:
 
 ```gradle
 repositories {
-    ...
+    //...
     allprojects {
         repositories {
             maven { url 'https://jitpack.io' }
@@ -81,7 +81,7 @@ repositories {
 }
 
 dependencies {
-    ...
+    //...
     compile 'com.github.trystan:AsciiPanel:master-SNAPSHOT'
 }
 ```
