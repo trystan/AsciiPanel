@@ -68,6 +68,24 @@ which provides AsciiPanel as dependency at:
 
 where `<version/>` describes the git commit you want to use.
 
+For Gradle users:
+
+```gradle
+repositories {
+    //...
+    allprojects {
+        repositories {
+            maven { url 'https://jitpack.io' }
+        }
+    }
+}
+
+dependencies {
+    //...
+    compile 'com.github.trystan:AsciiPanel:master-SNAPSHOT'
+}
+```
+
 ## Notes
 
 This project is built with Java 8. However the code itself does not *require* Java 8. If you are supporting a project running an earlier version of Java, you can change the pom file and rebuild the jar using your chosen version of Java without having to modify the code.
