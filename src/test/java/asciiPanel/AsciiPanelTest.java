@@ -1,43 +1,14 @@
 package asciiPanel;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.JComponent;
-import javax.swing.UIManager;
-import javax.swing.plaf.PanelUI;
-import org.junit.runner.RunWith;
-import org.junit.Before;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
+
+import java.awt.Dimension;
+
 import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
-@RunWith( PowerMockRunner.class )
-@PrepareForTest({ UIManager.class, ImageIO.class })
-@PowerMockIgnore("javax.swing.*")
 public class AsciiPanelTest {
-
-  @Before
-  public void initMocks() throws IOException {
-    PowerMockito.mockStatic(UIManager.class);
-    PowerMockito.mockStatic(ImageIO.class);
-
-    BufferedImage mockImage = mock(BufferedImage.class);
-    PanelUI mockPanelUi = mock(PanelUI.class);
-
-    when(UIManager.getUI(any(JComponent.class)))
-      .thenReturn(mockPanelUi);
-
-    when(ImageIO.read(any(File.class)))
-      .thenReturn(mockImage);
-  }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSetNegativeCursorX() {
