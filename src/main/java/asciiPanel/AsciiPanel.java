@@ -128,7 +128,7 @@ public class AsciiPanel extends JPanel {
 	/**
 	 * Gets the height, in pixels, of a character.
 	 * 
-	 * @return
+	 * @return the height in pixels of a character
 	 */
 	public int getCharHeight() {
 		return charHeight;
@@ -137,7 +137,7 @@ public class AsciiPanel extends JPanel {
 	/**
 	 * Gets the width, in pixels, of a character.
 	 * 
-	 * @return
+	 * @return the width in pixels of a character
 	 */
 	public int getCharWidth() {
 		return charWidth;
@@ -146,7 +146,7 @@ public class AsciiPanel extends JPanel {
 	/**
 	 * Gets the height in characters. A standard terminal is 24 characters high.
 	 * 
-	 * @return
+	 * @return the height in characters
 	 */
 	public int getHeightInCharacters() {
 		return heightInCharacters;
@@ -155,7 +155,7 @@ public class AsciiPanel extends JPanel {
 	/**
 	 * Gets the width in characters. A standard terminal is 80 characters wide.
 	 * 
-	 * @return
+	 * @return the width in characters
 	 */
 	public int getWidthInCharacters() {
 		return widthInCharacters;
@@ -164,7 +164,7 @@ public class AsciiPanel extends JPanel {
 	/**
 	 * Gets the distance from the left new text will be written to.
 	 * 
-	 * @return
+	 * @return the cursor position on x-axis
 	 */
 	public int getCursorX() {
 		return cursorX;
@@ -187,7 +187,7 @@ public class AsciiPanel extends JPanel {
 	/**
 	 * Gets the distance from the top new text will be written to.
 	 * 
-	 * @return
+	 * @return the cursor position on the y-axis
 	 */
 	public int getCursorY() {
 		return cursorY;
@@ -224,7 +224,7 @@ public class AsciiPanel extends JPanel {
 	/**
 	 * Gets the default background color that is used when writing new text.
 	 * 
-	 * @return
+	 * @return the default background color
 	 */
 	public Color getDefaultBackgroundColor() {
 		return defaultBackgroundColor;
@@ -245,7 +245,7 @@ public class AsciiPanel extends JPanel {
 	/**
 	 * Gets the default foreground color that is used when writing new text.
 	 * 
-	 * @return
+	 * @return the default foreground color
 	 */
 	public Color getDefaultForegroundColor() {
 		return defaultForegroundColor;
@@ -266,7 +266,7 @@ public class AsciiPanel extends JPanel {
 	/**
 	 * Gets the currently selected font
 	 * 
-	 * @return
+	 * @return the currently selected font
 	 */
 	public AsciiFont getAsciiFont() {
 		return asciiFont;
