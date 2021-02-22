@@ -103,7 +103,7 @@ This will build the project, run the unit tests, and copy the resulting jar into
 <dependency>
   <groupId>net.trystan</groupId>
   <artifactId>ascii-panel</artifactId>
-  <version>1.1</version>
+  <version>1.3</version>
 </dependency>
 ```
 
@@ -119,11 +119,11 @@ Or you can add the jitpack repository to your pom:
 which provides AsciiPanel as dependency at:
 
 ```xml
-<dependency>
-  <groupId>com.github.cblte</groupId>
-  <artifactId>AsciiPanel</artifactId>
-  <version>31bc98d</version>
-</dependency>
+	<dependency>
+	    <groupId>com.github.cblte</groupId>
+	    <artifactId>asciipanel</artifactId>
+	    <version>1.3.0</version>
+	</dependency>
 ```
 
 where `<version/>` describes the git commit you want to use.
