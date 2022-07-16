@@ -112,14 +112,14 @@ public class AsciiPanelTest {
 
     fail("Should have thrown an IllegalArgumentException.");
   }
-  
+
   @Test( expected = NullPointerException.class )
   public void testWriteNullFail() {
     AsciiPanel panel = new AsciiPanel(80, 1);
     panel.write(null);
     fail("Should have thrown a NullPointerException.");
   }
-  
+
   @Test( expected = IllegalArgumentException.class )
   public void testWriteInvalidLengthFail() {
     AsciiPanel panel = new AsciiPanel(80, 1);
@@ -228,5 +228,53 @@ public class AsciiPanelTest {
     Dimension newDimensions = panel.getPreferredSize();
 
     assertNotEquals(oldDimensions, newDimensions);
+  }
+
+  @Test
+  public void testWrite() {
+    int width = 100;
+    int height = 100;
+    AsciiPanel panel = new AsciiPanel(width, height);
+
+    // write out characters in a specific pattern such that we can verify each is written correctly to the specified
+    // position
+    Color oddColumnForeground = new Color(255, 255, 255);
+    Color evenColumnForeground = new Color(0, 0, 0);
+    Color oddRowBackground = new Color(255, 255, 0);
+    Color evenRowBackground = new Color(0, 255, 255);
+
+    AsciiCharacterData[][] expectedCharacterData = new AsciiCharacterData[width][height];
+
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < width; y++) {
+        AsciiCharacterData characterData = new AsciiCharacterData();
+        characterData.character = (char)(x + y);
+        if (x % 2 == 0) {
+          characterData.foregroundColor = evenColumnForeground;
+        } else {
+          characterData.foregroundColor = oddColumnForeground;
+        }
+
+        if (y % 2 == 0) {
+          characterData.backgroundColor = evenRowBackground;
+        } else {
+          characterData.backgroundColor = oddRowBackground;
+        }
+        panel.write(characterData, x, y);
+        expectedCharacterData[x][y] = characterData;
+      }
+    }
+
+    // now validate that it was written as expected
+    AsciiCharacterData[][] writtenData = panel.getCharacters();
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        AsciiCharacterData expectedCharData = expectedCharacterData[x][y];
+        AsciiCharacterData writtenCharData = writtenData[x][y];
+        assertEquals(expectedCharData.character, writtenCharData.character);
+        assertEquals(expectedCharData.foregroundColor, writtenCharData.foregroundColor);
+        assertEquals(expectedCharData.backgroundColor, writtenCharData.backgroundColor);
+      }
+    }
   }
 }
