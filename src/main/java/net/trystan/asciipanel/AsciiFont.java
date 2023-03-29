@@ -1,4 +1,4 @@
-package asciiPanel;
+package net.trystan.asciipanel;
 
 /**
  * This class holds provides all available Fonts for the AsciiPanel.

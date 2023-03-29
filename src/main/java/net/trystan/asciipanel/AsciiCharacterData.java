@@ -1,4 +1,4 @@
-package asciiPanel;
+package net.trystan.asciipanel;
 
 import java.awt.Color;
 

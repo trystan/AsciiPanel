@@ -1,4 +1,4 @@
-package asciiPanel;
+package net.trystan.asciipanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -295,9 +295,10 @@ public class AsciiPanel extends JPanel {
     }
 
     /**
-     * Class constructor specifying the width and height in characters.
-     * @param width
-     * @param height
+     * Constructs a new AsciiPanel with the specified width and height in characters.
+     *
+     * @param width the width of the AsciiPanel in characters
+     * @param height the height of the AsciiPanel in characters
      */
     public AsciiPanel(int width, int height) {
     	this(width, height, null);

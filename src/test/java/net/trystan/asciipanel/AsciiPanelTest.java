@@ -1,5 +1,8 @@
-package asciiPanel;
+package net.trystan.asciipanel;
 
+import net.trystan.asciipanel.AsciiCharacterData;
+import net.trystan.asciipanel.AsciiFont;
+import net.trystan.asciipanel.AsciiPanel;
 import org.junit.Test;
 
 import java.awt.*;
