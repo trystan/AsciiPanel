@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.LookupOp;
 import java.awt.image.ShortLookupTable;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -431,10 +432,10 @@ public class AsciiPanel extends JPanel {
      * This method is called internally by the constructor.
      */
     private void loadGlyphs() {
-        try {
-            glyphSprite = ImageIO.read(AsciiPanel.class.getClassLoader().getResource(terminalFontFile));
+        try (InputStream is = AsciiPanel.class.getClassLoader().getResourceAsStream(terminalFontFile)) {
+            glyphSprite = ImageIO.read(is);
         } catch (IOException e) {
-            System.err.println("loadGlyphs(): " + e.getMessage());
+            System.err.println("loadGlyphs(): Error loading font file: " + e.getMessage());
         }
 
         for (int i = 0; i < 256; i++) {
@@ -442,7 +443,8 @@ public class AsciiPanel extends JPanel {
             int sy = (i / 16) * charHeight;
 
             glyphs[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
-            glyphs[i].getGraphics().drawImage(glyphSprite, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
+            glyphs[i] = glyphSprite.getSubimage(sx, sy, charWidth, charHeight);
+            // https://docs.oracle.com/en/java/javase/11/docs/api/java.desktop/java/awt/image/BufferedImage.html#getSubimage(int,int,int,int)
         }
     }
         
