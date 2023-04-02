@@ -2,6 +2,11 @@ package net.trystan.asciipanel;
 
 import java.awt.*;
 
+/**
+ * The AsciiCharacterData class represents a single character in the ASCII character set. It contains the character's
+ * glyph (image) data, as well as its foreground and background colors. This class is used by the AsciiPanel class to
+ * render text on the console.
+ */
 public class AsciiCharacterData {
 
     /**

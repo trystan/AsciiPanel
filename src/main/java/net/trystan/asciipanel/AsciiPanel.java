@@ -965,10 +965,27 @@ public class AsciiPanel extends JPanel {
         return this;
     }
 
+    /**
+     * Iterates over each tile in the console and applies a transformation function to it. The transformation function
+     * is defined by an implementation of the TileTransformer interface. The method processes only the visible part of
+     * the console if scrolling is enabled. If scrolling is disabled, it processes the entire console.
+     *
+     * @param transformer an implementation of the TileTransformer interface that defines the transformation function to
+     *                    apply
+     */
     public void withEachTile(TileTransformer transformer) {
         withEachTile(0, 0, widthInCharacters, heightInCharacters, transformer);
     }
 
+    /**
+     * Calls the given TileTransformer function on each tile within the specified rectangular region of the AsciiPanel.
+     *
+     * @param left        the x-coordinate of the left edge of the rectangular region
+     * @param top         the y-coordinate of the top edge of the rectangular region
+     * @param width       the width of the rectangular region, in characters
+     * @param height      the height of the rectangular region, in characters
+     * @param transformer the function to apply to each tile within the specified region
+     */
     public void withEachTile(int left, int top, int width, int height, TileTransformer transformer) {
         for (int x0 = 0; x0 < width; x0++) {
             for (int y0 = 0; y0 < height; y0++) {
