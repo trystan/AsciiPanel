@@ -96,21 +96,85 @@ public class AsciiPanel extends JPanel {
      * Represents a brighter white (pure white) with RGB values (255, 255, 255).
      */
     public static Color brightWhite = new Color(255, 255, 255);
+
+    /**
+     * The width of the AsciiPanel in characters.
+     */
     private final int widthInCharacters;
+
+    /**
+     * The height of the AsciiPanel in characters.
+     */
     private final int heightInCharacters;
+
+    /**
+     * The two-dimensional array of AsciiCharacterData objects that represent the characters and their properties.
+     */
     private final AsciiCharacterData[][] characters;
+
+    /**
+     * The offscreen buffer used for double buffering.
+     */
     private Image offscreenBuffer;
+
+    /**
+     * The graphics context for the offscreen buffer.
+     */
     private Graphics offscreenGraphics;
+
+    /**
+     * The width of each character in pixels.
+     */
     private int charWidth = 9;
+
+    /**
+     * The height of each character in pixels.
+     */
     private int charHeight = 16;
+
+    /**
+     * The name of the terminal font file used to render the glyphs.
+     */
     private String terminalFontFile = "cp437_9x16.png";
+
+    /**
+     * The default background color of the AsciiPanel.
+     */
     private Color defaultBackgroundColor;
+
+    /**
+     * The default foreground color of the AsciiPanel.
+     */
     private Color defaultForegroundColor;
+
+    /**
+     * The X-coordinate of the cursor position.
+     */
     private int cursorX;
+
+    /**
+     * The Y-coordinate of the cursor position.
+     */
     private int cursorY;
+
+    /**
+     * The image that contains all the glyph images.
+     */
     private BufferedImage glyphSprite;
+
+    /**
+     * The array of glyph images, one for each character.
+     */
     private BufferedImage[] glyphs;
+
+    /**
+     * The previous characters and their properties.
+     */
     private AsciiCharacterData[][] previousCharacters;
+
+    /**
+     * The AsciiFont used to render the characters.
+     */
     private AsciiFont asciiFont;
 
     /**
@@ -237,11 +301,9 @@ public class AsciiPanel extends JPanel {
         if (y < 0 || y >= heightInCharacters)
             throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")");
 
-        if (width < 1)
-            throw new IllegalArgumentException("width " + width + " must be greater than 0.");
+        if (width < 1) throw new IllegalArgumentException("width " + width + " must be greater than 0.");
 
-        if (height < 1)
-            throw new IllegalArgumentException("height " + height + " must be greater than 0.");
+        if (height < 1) throw new IllegalArgumentException("height " + height + " must be greater than 0.");
 
         if (x + width > widthInCharacters)
             throw new IllegalArgumentException("x + width " + (x + width) + " must be less than " + (widthInCharacters + 1) + ".");
@@ -417,8 +479,7 @@ public class AsciiPanel extends JPanel {
      * @throws NullPointerException if the given color is null
      */
     public void setDefaultBackgroundColor(Color defaultBackgroundColor) {
-        if (defaultBackgroundColor == null)
-            throw new NullPointerException("defaultBackgroundColor must not be null.");
+        if (defaultBackgroundColor == null) throw new NullPointerException("defaultBackgroundColor must not be null.");
 
         this.defaultBackgroundColor = defaultBackgroundColor;
     }
@@ -441,8 +502,7 @@ public class AsciiPanel extends JPanel {
      * @throws NullPointerException if defaultForegroundColor is null
      */
     public void setDefaultForegroundColor(Color defaultForegroundColor) {
-        if (defaultForegroundColor == null)
-            throw new NullPointerException("defaultForegroundColor must not be null.");
+        if (defaultForegroundColor == null) throw new NullPointerException("defaultForegroundColor must not be null.");
 
         this.defaultForegroundColor = defaultForegroundColor;
     }
@@ -514,8 +574,7 @@ public class AsciiPanel extends JPanel {
      */
     @Override
     public void paint(Graphics g) {
-        if (g == null)
-            throw new NullPointerException();
+        if (g == null) throw new NullPointerException();
 
         // Iterate through all characters in the panel
         for (int x = 0; x < widthInCharacters; x++) {
@@ -525,10 +584,7 @@ public class AsciiPanel extends JPanel {
                 AsciiCharacterData newCharacterData = characters[x][y];
 
                 // If the new character has the same colors and character as the previous character, skip it
-                if (previousCharacterData != null
-                        && newCharacterData.backgroundColor == previousCharacterData.backgroundColor
-                        && newCharacterData.foregroundColor == previousCharacterData.foregroundColor
-                        && newCharacterData.character == previousCharacterData.character)
+                if (previousCharacterData != null && newCharacterData.backgroundColor == previousCharacterData.backgroundColor && newCharacterData.foregroundColor == previousCharacterData.foregroundColor && newCharacterData.character == previousCharacterData.character)
                     continue;
 
                 // Create a new LookupOp to set the colors of the glyph for the new character
@@ -718,8 +774,7 @@ public class AsciiPanel extends JPanel {
      * @throws IllegalArgumentException if the written string exceeds the panel's width
      */
     public AsciiPanel write(String string) {
-        if (string == null)
-            throw new NullPointerException("string must not be null");
+        if (string == null) throw new NullPointerException("string must not be null");
 
         if (cursorX + string.length() > widthInCharacters)
             throw new IllegalArgumentException("cursorX + string.length() " + (cursorX + string.length()) + " must be less than " + widthInCharacters + ".");
@@ -748,8 +803,7 @@ public class AsciiPanel extends JPanel {
      * @see #getHeightInCharacters()
      */
     public AsciiPanel write(String string, int x, int y, Color foreground, Color background) {
-        if (string == null)
-            throw new NullPointerException("string must not be null.");
+        if (string == null) throw new NullPointerException("string must not be null.");
 
         if (x + string.length() > widthInCharacters)
             throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than " + widthInCharacters + ".");
@@ -760,11 +814,9 @@ public class AsciiPanel extends JPanel {
         if (y < 0 || y >= heightInCharacters)
             throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ").");
 
-        if (foreground == null)
-            foreground = defaultForegroundColor;
+        if (foreground == null) foreground = defaultForegroundColor;
 
-        if (background == null)
-            background = defaultBackgroundColor;
+        if (background == null) background = defaultBackgroundColor;
 
         for (int i = 0; i < string.length(); i++) {
             write(string.charAt(i), x + i, y, foreground, background);
@@ -784,8 +836,7 @@ public class AsciiPanel extends JPanel {
      *                                  current cursor position
      */
     public AsciiPanel write(String string, Color foreground) {
-        if (string == null)
-            throw new NullPointerException("string must not be null");
+        if (string == null) throw new NullPointerException("string must not be null");
 
         if (cursorX + string.length() > widthInCharacters)
             throw new IllegalArgumentException("cursorX + string.length() " + (cursorX + string.length()) + " must be less than " + widthInCharacters + ".");
@@ -805,8 +856,7 @@ public class AsciiPanel extends JPanel {
      * @throws IllegalArgumentException if the specified string extends beyond the right edge of the panel
      */
     public AsciiPanel write(String string, Color foreground, Color background) {
-        if (string == null)
-            throw new NullPointerException("string must not be null");
+        if (string == null) throw new NullPointerException("string must not be null");
 
         if (cursorX + string.length() > widthInCharacters)
             throw new IllegalArgumentException("cursorX + string.length() " + (cursorX + string.length()) + " must be less than " + widthInCharacters + ".");
@@ -828,8 +878,7 @@ public class AsciiPanel extends JPanel {
      * @see #getHeightInCharacters()
      */
     public AsciiPanel write(String string, int x, int y) {
-        if (string == null)
-            throw new NullPointerException("string must not be null");
+        if (string == null) throw new NullPointerException("string must not be null");
 
         if (x + string.length() > widthInCharacters)
             throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than " + widthInCharacters + ".");
@@ -859,8 +908,7 @@ public class AsciiPanel extends JPanel {
      * @see #getHeightInCharacters()
      */
     public AsciiPanel write(String string, int x, int y, Color foreground) {
-        if (string == null)
-            throw new NullPointerException("string must not be null");
+        if (string == null) throw new NullPointerException("string must not be null");
 
         if (x + string.length() > widthInCharacters)
             throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than " + widthInCharacters + ".");
@@ -886,8 +934,7 @@ public class AsciiPanel extends JPanel {
      *                                  outside the panel's height
      */
     public AsciiPanel writeCenter(String string, int y) {
-        if (string == null)
-            throw new NullPointerException("string must not be null");
+        if (string == null) throw new NullPointerException("string must not be null");
 
         if (string.length() > widthInCharacters)
             throw new IllegalArgumentException("string.length() " + string.length() + " must be less than " + widthInCharacters + ".");
@@ -914,8 +961,7 @@ public class AsciiPanel extends JPanel {
      *                                  range
      */
     public AsciiPanel writeCenter(String string, int y, Color foreground) {
-        if (string == null)
-            throw new NullPointerException("string must not be null");
+        if (string == null) throw new NullPointerException("string must not be null");
 
         if (string.length() > widthInCharacters)
             throw new IllegalArgumentException("string.length() " + string.length() + " must be less than " + widthInCharacters + ".");
@@ -942,8 +988,7 @@ public class AsciiPanel extends JPanel {
      *                                  argument is out of range.
      */
     public AsciiPanel writeCenter(String string, int y, Color foreground, Color background) {
-        if (string == null)
-            throw new NullPointerException("string must not be null.");
+        if (string == null) throw new NullPointerException("string must not be null.");
 
         if (string.length() > widthInCharacters)
             throw new IllegalArgumentException("string.length() " + string.length() + " must be less than " + widthInCharacters + ".");
@@ -953,11 +998,9 @@ public class AsciiPanel extends JPanel {
         if (y < 0 || y >= heightInCharacters)
             throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ").");
 
-        if (foreground == null)
-            foreground = defaultForegroundColor;
+        if (foreground == null) foreground = defaultForegroundColor;
 
-        if (background == null)
-            background = defaultBackgroundColor;
+        if (background == null) background = defaultBackgroundColor;
 
         for (int i = 0; i < string.length(); i++) {
             write(string.charAt(i), x + i, y, foreground, background);
@@ -992,8 +1035,7 @@ public class AsciiPanel extends JPanel {
                 int x = left + x0;
                 int y = top + y0;
 
-                if (x < 0 || y < 0 || x >= widthInCharacters || y >= heightInCharacters)
-                    continue;
+                if (x < 0 || y < 0 || x >= widthInCharacters || y >= heightInCharacters) continue;
 
                 transformer.transformTile(x, y, characters[x][y]);
             }
