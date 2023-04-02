@@ -1,8 +1,21 @@
 package net.trystan.asciipanel;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class AsciiCharacterData {
+
+    /**
+     * The character represented by this AsciiCharacterData object.
+     */
+    public char character;
+    /**
+     * The foreground color of this AsciiCharacterData object.
+     */
+    public Color foregroundColor;
+    /**
+     * The background color of this AsciiCharacterData object.
+     */
+    public Color backgroundColor;
 
     /**
      * Constructs a new AsciiCharacterData object with default values for all properties.
@@ -22,19 +35,4 @@ public class AsciiCharacterData {
         this.foregroundColor = foregroundColor;
         this.backgroundColor = backgroundColor;
     }
-
-    /**
-     * The character represented by this AsciiCharacterData object.
-     */
-    public char character;
-
-    /**
-     * The foreground color of this AsciiCharacterData object.
-     */
-    public Color foregroundColor;
-
-    /**
-     * The background color of this AsciiCharacterData object.
-     */
-    public Color backgroundColor;
 }
