@@ -31,6 +31,7 @@ AsciiPanel myPanel = new AsciiPanel(80, 24, AsciiFont.DRAKE_10x10);
 
 ## Demo
 
+Small demo of AsciiPanel.
 ```java
 import asciiPanel.AsciiFont;
 import asciiPanel.AsciiPanel;
